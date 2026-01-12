@@ -1,371 +1,87 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CE DELF B1/B2 - Le Télétravail</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DELF B1/B2 – Télétravail</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-    body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; scroll-behavior: smooth; }
-    .word { cursor: pointer; transition: all 0.2s; border-radius: 3px; padding: 0 1px; }
-    .word:hover { background-color: #dbeafe; color: #1e40af; }
-    .word.highlight { background-color: #fbbf24 !important; color: #000 !important; font-weight: 600; box-shadow: 0 0 10px rgba(251, 191, 36, 0.6); }
-    .sticky-audio { position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
-
-    .loader { border: 3px solid #f3f3f3; border-top: 3px solid #6366f1; border-radius: 50%; width: 22px; height: 22px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 12px; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-    .feedback-box { white-space: pre-wrap; line-height: 1.6; }
-    .correct-ans { border-left: 5px solid #10b981; background-color: #f0fdf4; padding: 1rem; border-radius: 0.5rem; margin-bottom: 0.75rem; }
-    .incorrect-ans { border-left: 5px solid #ef4444; background-color: #fef2f2; padding: 1rem; border-radius: 0.5rem; margin-bottom: 0.75rem; }
-  </style>
 </head>
 
-<body class="p-2 md:p-6">
+<body class="bg-slate-100 p-6">
 
-  <div class="max-w-7xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden border border-slate-200">
-    <!-- HEADER & CONTROLES AUDIO -->
-    <header class="p-6 sticky-audio flex flex-col md:flex-row justify-between items-center gap-4">
-      <div class="flex items-center gap-4">
-        <div class="bg-indigo-600 text-white p-3 rounded-2xl shadow-lg">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-          </svg>
-        </div>
-        <div>
-          <h1 class="text-2xl font-black text-slate-900 leading-tight">Le Télétravail : une mutation irréversible ?</h1>
-          <p class="text-slate-500 text-xs font-semibold uppercase tracking-widest">DELF B1 / B2 • Compréhension des Écrits & Expression</p>
-        </div>
-      </div>
+  <div class="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow">
+    <h1 class="text-2xl font-bold mb-4">Expression écrite – DELF B2</h1>
 
-      <div class="flex items-center gap-2 bg-slate-100 p-2 rounded-2xl border border-slate-200">
-        <button id="btn-play" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all active:scale-95 flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/>
-          </svg>
-          Lire
-        </button>
-        <button id="btn-pause" class="hidden bg-amber-500 hover:bg-amber-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all">Pause</button>
-        <button id="btn-resume" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all">Reprendre</button>
-        <button id="btn-stop" class="hidden bg-slate-300 text-slate-700 px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all">Stop</button>
-      </div>
-    </header>
+    <textarea
+      id="essay-area"
+      class="w-full border p-4 rounded mb-4"
+      rows="6"
+      placeholder="Écris ton texte ici..."
+    ></textarea>
 
-    <div id="audio-progress-container" class="w-full bg-slate-100 h-1.5 overflow-hidden hidden">
-      <div id="audio-progress" class="bg-indigo-500 h-full w-0 transition-all duration-300"></div>
+    <button
+      id="btn-ai-correct"
+      class="w-full bg-indigo-600 text-white py-3 rounded font-bold"
+    >
+      Obtenir une correction IA
+    </button>
+
+    <div
+      id="ai-feedback-container"
+      class="hidden mt-6 p-4 bg-slate-900 text-white rounded"
+    >
+      <h3 class="font-bold mb-2">Analyse de l'examinateur IA</h3>
+      <pre id="ai-response-text" class="whitespace-pre-wrap text-sm"></pre>
     </div>
-
-    <main class="flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-slate-100">
-
-      <!-- SECTION TEXTE -->
-      <section class="lg:w-1/2 p-6 md:p-12 space-y-10 bg-white">
-        <div class="prose prose-xl max-w-none">
-          <p id="text-container" class="text-slate-800 leading-relaxed text-justify text-xl font-light">
-            Depuis la crise sanitaire mondiale de 2020, le télétravail s'est imposé comme une modalité d'organisation incontournable. Autrefois perçu comme un privilège rare réservé à quelques experts du numérique ou comme une solution de secours temporaire, il est désormais au cœur des négociations collectives entre salariés et employeurs. Cette mutation profonde interroge nos habitudes et redéfinit la notion même de productivité.
-
-            Pour beaucoup, le travail à distance offre une flexibilité précieuse. Le gain de temps lié à l'absence de trajets domicile-travail réduit considérablement le stress quotidien et permet un meilleur équilibre entre vie professionnelle et vie privée. Les entreprises y voient également un avantage économique non négligeable, notamment par la réduction des coûts fixes liés aux locaux et une productivité parfois accrue grâce au calme de l'environnement domestique. En effet, de nombreuses études montrent que le salarié, loin de l'agitation de l'open space, se concentre plus facilement sur des tâches complexes.
-
-            Cependant, cette pratique n'est pas exempte de risques sociologiques et psychologiques. L'isolement social est le danger le plus fréquemment cité. Sans les interactions informelles autour de la machine à café ou lors des déjeuners d'équipe, le sentiment d'appartenance à un collectif peut s'étioler rapidement. De plus, la frontière entre le bureau et la maison devient de plus en plus poreuse : il est parfois difficile de « déconnecter » vraiment, ce qui peut mener à un épuisement professionnel d'un genre nouveau, caractérisé par une hyper-connexion subie.
-
-            En conclusion, si le télétravail hybride — alternant présence et distance — semble être le modèle de demain, il nécessite un cadre juridique clair. Il appelle surtout une nouvelle culture du management basée sur la confiance et l'atteinte d'objectifs plutôt que sur la surveillance physique constante. La réussite de ce modèle dépendra de notre capacité à maintenir le lien social malgré l'écran.
-          </p>
-        </div>
-
-        <div class="bg-indigo-50 p-6 rounded-3xl border border-indigo-100">
-          <h3 class="text-indigo-900 font-bold mb-3 flex items-center gap-2 italic">Lexique B1/B2</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="bg-white p-3 rounded-xl border border-indigo-100 text-xs"><strong>Incontournable :</strong> Nécessaire, inévitable.</div>
-            <div class="bg-white p-3 rounded-xl border border-indigo-100 text-xs"><strong>S'étioler :</strong> S'affaiblir progressivement.</div>
-            <div class="bg-white p-3 rounded-xl border border-indigo-100 text-xs"><strong>Poreuse :</strong> Qui n'est plus étanche (limites floues).</div>
-            <div class="bg-white p-3 rounded-xl border border-indigo-100 text-xs"><strong>Épuisement :</strong> Fatigue extrême (burn-out).</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SECTION EXERCICES -->
-      <section class="lg:w-1/2 p-6 md:p-12 bg-slate-50 space-y-12 overflow-y-auto max-h-screen">
-
-        <form id="quiz-form" class="space-y-8">
-          <h2 class="text-xl font-black text-indigo-900 border-l-4 border-indigo-600 pl-4 uppercase tracking-tight">I. Compréhension (7 questions)</h2>
-
-          <div id="questions-container" class="space-y-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-              <p class="font-bold text-slate-800 mb-4">1. Comment la perception du télétravail a-t-elle évolué ?</p>
-              <div class="space-y-3 text-sm">
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="q1" value="a"> <span>C'est redevenu un privilège exceptionnel.</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="q1" value="b"> <span>C'est maintenant un sujet central de négociation collective.</span></label>
-              </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-              <p class="font-bold text-slate-800 mb-4">2. Quel est le bénéfice principal de la suppression des trajets ?</p>
-              <div class="space-y-3 text-sm">
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="q2" value="a"> <span>Une augmentation de la productivité.</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="q2" value="b"> <span>Une réduction significative du stress quotidien.</span></label>
-              </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-              <p class="font-bold text-slate-800 mb-4">3. Pourquoi les entreprises y voient-elles un intérêt financier ?</p>
-              <div class="space-y-3 text-sm">
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="q3" value="a"> <span>Grâce à la baisse des coûts liés aux locaux physiques.</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="q3" value="b"> <span>Grâce à la diminution des salaires.</span></label>
-              </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-              <p class="font-bold text-slate-800 mb-2 font-sm italic uppercase text-indigo-600">Vrai / Faux</p>
-              <p class="font-bold text-slate-800 mb-3">4. Le calme domestique est cité comme un facteur de concentration.</p>
-              <div class="flex gap-4 mb-3">
-                <label class="flex items-center gap-2"><input type="radio" name="q4" value="vrai"> <span>Vrai</span></label>
-                <label class="flex items-center gap-2"><input type="radio" name="q4" value="faux"> <span>Faux</span></label>
-              </div>
-              <textarea name="q4_justif" class="w-full text-xs p-3 border rounded-xl" placeholder="Justification par citation..."></textarea>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-              <p class="font-bold text-slate-800 mb-4">5. Quel danger social menace le sentiment d'appartenance ?</p>
-              <div class="space-y-3 text-sm">
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="q5" value="a"> <span>L'absence d'interactions informelles.</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="q5" value="b"> <span>Le manque de matériel.</span></label>
-              </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-              <p class="font-bold text-slate-800 mb-4">6. Que signifie l'expression "frontière poreuse" ?</p>
-              <div class="space-y-3 text-sm">
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="q6" value="a"> <span>L'isolation phonique est mauvaise.</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="q6" value="b"> <span>Le mélange du temps privé et professionnel.</span></label>
-              </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-              <p class="font-bold text-slate-800 mb-4">7. Quel pilier le management doit-il privilégier ?</p>
-              <div class="space-y-3 text-sm">
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="q7" value="a"> <span>La surveillance constante.</span></label>
-                <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="q7" value="b"> <span>La confiance mutuelle.</span></label>
-              </div>
-            </div>
-          </div>
-
-          <button type="submit" id="btn-validate" class="w-full bg-slate-900 text-white font-black py-5 rounded-2xl shadow-xl transition-all">Valider les réponses</button>
-        </form>
-
-        <div id="results-panel" class="hidden p-8 bg-white rounded-3xl border-4 border-indigo-50">
-          <h3 class="text-3xl font-black text-center mb-6 text-slate-900">Score : <span id="final-score">0</span> / 7</h3>
-          <div id="feedback-content" class="space-y-3"></div>
-          <button type="button" id="btn-reset-quiz" class="mt-6 w-full py-2 text-slate-500 underline text-sm">Réessayer</button>
-        </div>
-
-        <div class="p-8 bg-slate-900 rounded-3xl text-white shadow-2xl space-y-6">
-          <h3 class="text-xl font-bold text-indigo-400">II. Expression Écrite (B2)</h3>
-          <p class="text-sm italic text-slate-300">"Le télétravail hybride est-il la solution idéale ? Argumentez (160 mots min.)"</p>
-          <textarea id="essay-area" class="w-full p-4 bg-slate-800 border border-slate-700 rounded-xl text-white outline-none focus:ring-2 focus:ring-indigo-400" rows="8" placeholder="Votre production originale ici..."></textarea>
-
-          <button id="btn-ai-correct" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex justify-center items-center">
-            <span id="ai-btn-text">Obtenir une correction détaillée (IA)</span>
-          </button>
-
-          <div id="ai-feedback-container" class="hidden bg-slate-800 p-6 rounded-2xl border border-slate-700 mt-4">
-            <h4 class="font-bold text-indigo-300 text-sm uppercase mb-4">Analyse de l'examinateur IA</h4>
-            <div id="ai-response-text" class="feedback-box text-slate-200 text-sm"></div>
-          </div>
-        </div>
-
-      </section>
-    </main>
   </div>
 
   <script>
-    const textContainer = document.getElementById('text-container');
-    const btnPlay = document.getElementById('btn-play');
-    const btnPause = document.getElementById('btn-pause');
-    const btnResume = document.getElementById('btn-resume');
-    const btnStop = document.getElementById('btn-stop');
-    const progressBar = document.getElementById('audio-progress');
-    const progressContainer = document.getElementById('audio-progress-container');
-    const quizForm = document.getElementById('quiz-form');
-    const resultsPanel = document.getElementById('results-panel');
-    const btnValidate = document.getElementById('btn-validate');
-    const essayArea = document.getElementById('essay-area');
-    const btnAiCorrect = document.getElementById('btn-ai-correct');
-    const aiResponseText = document.getElementById('ai-response-text');
-    const aiFeedbackContainer = document.getElementById('ai-feedback-container');
-    const aiBtnText = document.getElementById('ai-btn-text');
+    const btn = document.getElementById("btn-ai-correct");
+    const area = document.getElementById("essay-area");
+    const box = document.getElementById("ai-feedback-container");
+    const out = document.getElementById("ai-response-text");
 
-    const originalTextContent = textContainer.innerText;
-    let synthesis = window.speechSynthesis;
-    let utterance = null;
+    async function getCorrection(text) {
+      const prompt = `Évalue ce texte comme un examinateur DELF B2 et donne une correction détaillée.\n\nTEXTE :\n${text}`;
 
-    function initText() {
-      const fragments = textContainer.innerText.split(/(\s+)/);
-      textContainer.innerHTML = '';
-      fragments.forEach(frag => {
-        if (frag.trim()) {
-          const s = document.createElement('span');
-          s.innerText = frag;
-          s.className = 'word';
-          s.onclick = () => {
-            synthesis.cancel();
-            const m = new SpeechSynthesisUtterance(frag);
-            m.lang = 'fr-FR';
-            synthesis.speak(m);
-          };
-          textContainer.appendChild(s);
-        } else {
-          textContainer.appendChild(document.createTextNode(frag));
-        }
-      });
-    }
-
-    btnPlay.onclick = () => {
-      synthesis.cancel();
-      utterance = new SpeechSynthesisUtterance(originalTextContent);
-      utterance.lang = 'fr-FR';
-      utterance.rate = 0.85;
-      btnPlay.classList.add('hidden');
-      btnPause.classList.remove('hidden');
-      btnStop.classList.remove('hidden');
-      progressContainer.classList.remove('hidden');
-
-      utterance.onboundary = (e) => { if (e.name === 'word') highlightWord(e.charIndex); };
-      utterance.onend = resetAudioUI;
-
-      synthesis.speak(utterance);
-    };
-
-    btnPause.onclick = () => {
-      synthesis.pause();
-      btnPause.classList.add('hidden');
-      btnResume.classList.remove('hidden');
-    };
-
-    btnResume.onclick = () => {
-      synthesis.resume();
-      btnResume.classList.add('hidden');
-      btnPause.classList.remove('hidden');
-    };
-
-    btnStop.onclick = () => {
-      synthesis.cancel();
-      resetAudioUI();
-    };
-
-    function highlightWord(charOffset) {
-      document.querySelectorAll('.word').forEach(w => w.classList.remove('highlight'));
-      let acc = 0;
-      for (let node of textContainer.childNodes) {
-        let nodeText = node.nodeType === 3 ? node.nodeValue : node.innerText;
-        if (acc <= charOffset && charOffset < acc + nodeText.length && node.nodeType !== 3) {
-          node.classList.add('highlight');
-          node.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          progressBar.style.width = (charOffset / originalTextContent.length * 100) + '%';
-          break;
-        }
-        acc += nodeText.length;
-      }
-    }
-
-    function resetAudioUI() {
-      btnPlay.classList.remove('hidden');
-      btnPause.classList.add('hidden');
-      btnResume.classList.add('hidden');
-      btnStop.classList.add('hidden');
-      progressContainer.classList.add('hidden');
-      progressBar.style.width = '0%';
-      document.querySelectorAll('.word').forEach(w => w.classList.remove('highlight'));
-    }
-
-    quizForm.onsubmit = (e) => {
-      e.preventDefault();
-      const d = new FormData(quizForm);
-      let s = 0;
-      const answers = { q1: 'b', q2: 'b', q3: 'a', q4: 'vrai', q5: 'a', q6: 'b', q7: 'b' };
-      let fbHTML = '';
-
-      Object.keys(answers).forEach((q, i) => {
-        if (d.get(q) === answers[q]) {
-          s++;
-          fbHTML += `<div class="correct-ans">Question ${i + 1} : Correct</div>`;
-        } else {
-          fbHTML += `<div class="incorrect-ans">Question ${i + 1} : Erreur.</div>`;
-        }
+      const res = await fetch("/.netlify/functions/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
       });
 
-      document.getElementById('final-score').innerText = s;
-      document.getElementById('feedback-content').innerHTML = fbHTML;
-      resultsPanel.classList.remove('hidden');
-      btnValidate.classList.add('hidden');
-    };
+      const data = await res.json();
 
-    document.getElementById('btn-reset-quiz').onclick = () => {
-      quizForm.reset();
-      resultsPanel.classList.add('hidden');
-      btnValidate.classList.remove('hidden');
-    };
-
-    // ✅ Version sécurisée : la correction passe par Netlify Function (clé côté serveur)
-    async function getCorrection(text, retries = 5, delay = 1000) {
-      const prompt = `Tu es un examinateur DELF B2 expert en didactique FLE.
-
-CONTEXTE : L'apprenant rédige un essai sur le télétravail hybride.
-TEXTE DE RÉFÉRENCE (à comparer) :
-"""${originalTextContent}"""
-
-MISSION :
-1) Évalue si le texte de l'élève est original ou s'il s'agit d'un plagiat (copie) du texte de référence. Si c'est le cas, refuse l'évaluation.
-2) Sinon, évalue sur 25 pts (Respect consigne, Cohérence, Lexique, Grammaire).
-3) Propose des conseils pédagogiques précis.
-Réponds en français.
-
-TEXTE DE L'ÉLÈVE :
-"""${text}"""`;
-
-      try {
-        const response = await fetch("/.netlify/functions/analyze", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt })
-        });
-
-        const data = await response.json();
-        if (!response.ok) throw new Error(data?.error || "Erreur serveur (function).");
-
-        return data?.text || "Erreur lors de la récupération de l'analyse.";
-      } catch (err) {
-        if (retries > 0) {
-          await new Promise(r => setTimeout(r, delay));
-          return getCorrection(text, retries - 1, delay * 2);
-        }
-        throw err;
+      if (!res.ok) {
+        throw new Error(
+          data?.error
+            ? JSON.stringify(data.error, null, 2)
+            : "Erreur inconnue côté serveur"
+        );
       }
+
+      return data.text;
     }
 
-    btnAiCorrect.onclick = async () => {
-      const content = essayArea.value.trim();
-      if (content.length < 40) return alert("Votre texte est trop court pour une évaluation DELF B2.");
+    btn.onclick = async () => {
+      const content = area.value.trim();
+      if (content.length < 20) {
+        alert("Texte trop court.");
+        return;
+      }
 
-      aiBtnText.innerHTML = '<span class="loader"></span> Analyse en cours...';
-      btnAiCorrect.disabled = true;
-      aiFeedbackContainer.classList.add('hidden');
+      out.textContent = "Analyse en cours…";
+      box.classList.remove("hidden");
 
       try {
-        const feedback = await getCorrection(content);
-        aiResponseText.innerText = feedback;
-        aiFeedbackContainer.classList.remove('hidden');
-        aiFeedbackContainer.scrollIntoView({ behavior: 'smooth' });
+        const result = await getCorrection(content);
+        out.textContent = result;
       } catch (err) {
-        aiResponseText.innerText = "Une erreur est survenue lors de l'analyse. Veuillez réessayer plus tard.";
-        aiFeedbackContainer.classList.remove('hidden');
-      } finally {
-        aiBtnText.innerText = "Obtenir une correction détaillée (IA)";
-        btnAiCorrect.disabled = false;
+        out.textContent =
+          "ERREUR IA (message réel) :\n\n" + err.message;
       }
     };
-
-    window.onload = initText;
   </script>
+
 </body>
 </html>
